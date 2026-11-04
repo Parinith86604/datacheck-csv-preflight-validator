@@ -1,0 +1,86 @@
+
+> datacheck-csv-preflight@1.0.0 test
+> node --test
+
+TAP version 13
+# Subtest: parses a basic CSV and ignores a trailing newline
+ok 1 - parses a basic CSV and ignores a trailing newline
+  ---
+  duration_ms: 1.702743
+  type: 'test'
+  ...
+# Subtest: supports quoted commas, escaped quotes and embedded newlines
+ok 2 - supports quoted commas, escaped quotes and embedded newlines
+  ---
+  duration_ms: 0.334648
+  type: 'test'
+  ...
+# Subtest: strips a UTF-8 BOM and accepts CRLF
+ok 3 - strips a UTF-8 BOM and accepts CRLF
+  ---
+  duration_ms: 0.250182
+  type: 'test'
+  ...
+# Subtest: rejects an unterminated quoted field
+ok 4 - rejects an unterminated quoted field
+  ---
+  duration_ms: 0.467535
+  type: 'test'
+  ...
+# Subtest: rejects unexpected characters after a closing quote
+ok 5 - rejects unexpected characters after a closing quote
+  ---
+  duration_ms: 0.189913
+  type: 'test'
+  ...
+# Subtest: CSV output escapes commas, quotes and line breaks
+ok 6 - CSV output escapes commas, quotes and line breaks
+  ---
+  duration_ms: 0.292816
+  type: 'test'
+  ...
+# Subtest: detects missing values, invalid emails, invalid dates, full duplicates and duplicate keys
+ok 7 - detects missing values, invalid emails, invalid dates, full duplicates and duplicate keys
+  ---
+  duration_ms: 3.818562
+  type: 'test'
+  ...
+# Subtest: reports inconsistent row width without crashing
+ok 8 - reports inconsistent row width without crashing
+  ---
+  duration_ms: 0.360516
+  type: 'test'
+  ...
+# Subtest: reports duplicate headers as file-level issues
+ok 9 - reports duplicate headers as file-level issues
+  ---
+  duration_ms: 0.272105
+  type: 'test'
+  ...
+# Subtest: duplicate full rows are detected even when no key is selected
+ok 10 - duplicate full rows are detected even when no key is selected
+  ---
+  duration_ms: 0.377131
+  type: 'test'
+  ...
+# Subtest: filters records by issue type and flagged state
+ok 11 - filters records by issue type and flagged state
+  ---
+  duration_ms: 0.399664
+  type: 'test'
+  ...
+# Subtest: date validation rejects impossible dates and accepts supported formats
+ok 12 - date validation rejects impossible dates and accepts supported formats
+  ---
+  duration_ms: 0.263092
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 85.000516

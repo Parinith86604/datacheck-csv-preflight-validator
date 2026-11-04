@@ -1,0 +1,19 @@
+DATACHECK — LOCAL DEMONSTRATION
+
+1. Extract the submission archive.
+2. Open a terminal in DATACHECK_SOFTWARE_DEVELOPMENT/02_CODEBASE.
+3. Start the static server:
+
+   python -m http.server 8000
+
+4. Open http://localhost:8000 in a browser.
+5. Select Try sample data to load the built-in dataset.
+6. Confirm the summary shows the total, clean, flagged, and issue counts.
+7. Change Unique key column and observe that duplicate-key findings are recalculated.
+8. Use the issue filter to narrow the table.
+9. Download the clean CSV and export the issue report.
+10. Select New file to reset the workspace.
+
+The sample dataset is also available at examples/sample-data.csv.
+
+No deployment URL is included. The project has not been deployed to a public host.

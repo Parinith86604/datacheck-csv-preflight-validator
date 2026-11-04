@@ -1,0 +1,8 @@
+record_id,full_name,email,created_date,department
+1001,Aarav Rao,aarav@example.com,2026-10-14,Operations
+1002,Meera Nair,meera.example.com,2026-10-18,Finance
+1003,Kabir Shah,kabir@example.com,31/02/2026,Support
+1004,,nisha@example.com,2026-10-19,Operations
+1002,Meera Nair,meera.example.com,2026-10-18,Finance
+1006,Diya Sen,diya@example.com,2026-10-21,
+1007,Rohan Das,rohan@example.com,2026/10/22,Sales

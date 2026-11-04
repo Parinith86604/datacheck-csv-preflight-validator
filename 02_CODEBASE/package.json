@@ -1,0 +1,10 @@
+{
+  "name": "datacheck-csv-preflight",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Browser-local CSV pre-import validation tool",
+  "scripts": {
+    "test": "node --test"
+  }
+}

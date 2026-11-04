@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#090B10" />
+  <meta name="description" content="DataCheck validates CSV files locally before import." />
+  <title>DataCheck — CSV preflight</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="DataCheck home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span>data<span class="brand-accent">check</span></span>
+      </a>
+      <div class="topbar-right">
+        <span class="privacy-label"><span class="privacy-dot"></span> Runs in your browser</span>
+        <a class="docs-link" href="#how-it-works">How it works <span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="eyebrow"><span class="eyebrow-line"></span> CSV FILE CHECK</div>
+        <h1>Check your CSV<br /><span>before importing it.</span></h1>
+        <p class="hero-copy">Choose a CSV file to check for common data problems. Review the rows that need attention, then download a clean copy and a separate list of issues.</p>
+        <div class="hero-meta">
+          <span><span class="meta-check">✓</span> No sign-up</span>
+          <span><span class="meta-check">✓</span> No server upload</span>
+          <span><span class="meta-check">✓</span> Export clean rows</span>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="CSV validation workspace">
+        <div class="upload-card" id="uploadCard">
+          <div class="upload-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M4 15.5v3A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5v-3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="upload-copy">
+            <h2>Drop your CSV here</h2>
+            <p>or <label for="fileInput" class="browse-link">browse files</label></p>
+            <span class="upload-hint">.csv files · up to 10 MB · processed locally</span>
+          </div>
+          <input id="fileInput" type="file" accept=".csv,text/csv" hidden />
+          <div class="upload-actions">
+            <button class="button button-secondary" id="sampleButton" type="button">Try sample data</button>
+          </div>
+        </div>
+        <p class="upload-error" id="uploadError" role="alert" hidden></p>
+
+        <section class="results" id="results" hidden aria-live="polite">
+          <div class="results-heading">
+            <div>
+              <div class="eyebrow"><span class="eyebrow-line"></span> VALIDATION RESULT</div>
+              <h2 id="resultTitle">Your file is ready to review</h2>
+              <p class="file-meta" id="fileMeta"></p>
+            </div>
+            <button class="button button-quiet" id="resetButton" type="button">← New file</button>
+          </div>
+
+          <div class="summary-grid" id="summaryGrid">
+            <article class="metric-card"><span class="metric-label">TOTAL ROWS</span><strong id="totalRows">0</strong><span class="metric-foot">Records scanned</span></article>
+            <article class="metric-card"><span class="metric-label">CLEAN ROWS</span><strong class="metric-clean" id="cleanRows">0</strong><span class="metric-foot">No detected issues</span></article>
+            <article class="metric-card"><span class="metric-label">ROWS TO REVIEW</span><strong class="metric-review" id="flaggedRows">0</strong><span class="metric-foot">At least one issue</span></article>
+            <article class="metric-card"><span class="metric-label">ISSUES FOUND</span><strong id="issueCount">0</strong><span class="metric-foot">Across all rules</span></article>
+          </div>
+
+          <div class="content-grid">
+            <aside class="settings-panel">
+              <div class="panel-title-row"><h3>Validation rules</h3><span class="live-pill"><span></span> ACTIVE</span></div>
+              <p class="panel-description">Checks are inferred from your column names. Choose a key to detect repeated identifiers.</p>
+              <label class="field-label" for="keyColumn">Unique key column</label>
+              <select id="keyColumn" class="select-control"><option value="">No key selected</option></select>
+              <p class="field-help">Every non-empty value in this column should appear once.</p>
+              <div class="rule-list" id="ruleList">
+                <div class="rule-item"><span class="rule-icon icon-required">!</span><div><strong>Missing values</strong><span>Blank cells in any column</span></div><span class="rule-status">ON</span></div>
+                <div class="rule-item"><span class="rule-icon icon-duplicate">↗</span><div><strong>Duplicate rows</strong><span>Repeated complete records</span></div><span class="rule-status">ON</span></div>
+                <div class="rule-item"><span class="rule-icon icon-email">@</span><div><strong>Email format</strong><span>Columns containing “email”</span></div><span class="rule-status">AUTO</span></div>
+                <div class="rule-item"><span class="rule-icon icon-date">◷</span><div><strong>Date format</strong><span>Date-like column names</span></div><span class="rule-status">AUTO</span></div>
+              </div>
+              <div class="privacy-note"><span class="privacy-lock">⌑</span><p><strong>Your file stays on this device.</strong><br />DataCheck runs the checks in this browser tab. The file is not sent to a server.</p></div>
+            </aside>
+
+            <section class="issues-panel" aria-label="Validation issues">
+              <div class="issues-toolbar">
+                <div><h3>Rows &amp; issues</h3><p id="tableCaption">Review flagged records and the reason they were flagged.</p></div>
+                <div class="filter-wrap"><label class="sr-only" for="issueFilter">Filter issues</label><select id="issueFilter" class="select-control filter-select"><option value="all">All rows</option><option value="flagged">Flagged only</option><option value="missing">Missing values</option><option value="duplicate_row">Duplicate rows</option><option value="duplicate_key">Duplicate key</option><option value="invalid_email">Invalid email</option><option value="invalid_date">Invalid date</option><option value="column_count">Column mismatch</option></select></div>
+              </div>
+              <div class="file-issues" id="fileIssues" hidden></div>
+              <div class="table-scroll">
+                <table class="data-table">
+                  <thead id="tableHead"></thead>
+                  <tbody id="tableBody"></tbody>
+                </table>
+              </div>
+              <div class="table-footer"><span id="visibleCount">0 rows</span><span>Showing up to 100 rows</span></div>
+              <div class="empty-state" id="emptyState" hidden>No rows match this filter.</div>
+            </section>
+          </div>
+
+          <div class="export-bar">
+            <div><strong>Ready for the next step?</strong><span>Download a clean dataset or a separate issue log.</span></div>
+            <div class="export-actions"><button class="button button-secondary" id="issuesExport" type="button">↓ Export issue report</button><button class="button button-primary" id="cleanExport" type="button">↓ Download clean CSV</button></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="how-section" id="how-it-works">
+        <div class="how-heading"><div class="eyebrow"><span class="eyebrow-line"></span> HOW TO USE DATACHECK</div><h2>Check the file.<br /><span>Review the results.</span></h2></div>
+        <div class="steps-grid">
+          <article class="step-card"><span class="step-number">01</span><h3>Bring your file</h3><p>Choose a CSV from your device. The file is read locally in your browser.</p></article>
+          <article class="step-card"><span class="step-number">02</span><h3>Inspect the risks</h3><p>Review row-level findings for blanks, duplicates, email formats and dates.</p></article>
+          <article class="step-card"><span class="step-number">03</span><h3>Export with context</h3><p>Download rows without detected issues and keep a separate audit-friendly issue report.</p></article>
+        </div>
+      </section>
+    </main>
+    <footer class="footer"><span>DATACHECK <span class="footer-muted">/ CSV PREFLIGHT TOOL</span></span><span>A small tool for checking CSV files</span></footer>
+  </div>
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>

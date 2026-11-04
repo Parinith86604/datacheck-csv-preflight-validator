@@ -1,0 +1,16 @@
+digraph DataCheck {
+  graph [rankdir=TB, bgcolor="white", pad="0.22", nodesep="0.32", ranksep="0.46", fontname="Arial", label="DATACHECK — BROWSER-LOCAL DATA FLOW", labelloc="t", fontsize=16, fontcolor="#101828"];
+  node [shape=box, style="rounded,filled", color="#d8deea", fillcolor="#f6f8fc", fontname="Arial", fontsize=10, fontcolor="#101828", margin="0.17,0.11"];
+  edge [color="#72809a", penwidth=1.2, arrowsize=0.7];
+  user [label="User selects CSV", fillcolor="#eef2ff", color="#b8c5ff"];
+  file [label="Browser File API\n10 MB / 25k-row limits"];
+  parser [label="CSV parser\nBOM · quotes · CRLF · newlines"];
+  validator [label="Validation engine\nmissing · duplicates · email · date"];
+  result [label="Issue model + summary\nrow-level and file-level findings"];
+  ui [label="UI\nmetrics · filters · review table"];
+  clean [label="Clean CSV export", fillcolor="#e9f7f0", color="#b9e5d0"];
+  issues [label="Issue report export", fillcolor="#fff5e5", color="#f0d7a9"];
+  user -> file -> parser -> validator -> result -> ui;
+  ui -> clean;
+  ui -> issues;
+}
